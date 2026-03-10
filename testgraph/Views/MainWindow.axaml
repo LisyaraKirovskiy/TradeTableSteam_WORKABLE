@@ -1,0 +1,290 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:testgraph.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="clr-namespace:Items.Model;assembly=Items.Model"
+        xmlns:avalonia="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="testgraph.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/steaminvest.ico"
+        Title="Steam Table"
+        WindowStartupLocation="CenterScreen"
+        Background="#212f3c">
+    
+    <Window.Styles>
+        <StyleInclude Source="Styles.axaml"></StyleInclude>
+    </Window.Styles>
+    
+    <Window.Resources>
+        <DataTemplate x:Key="TemplateOfItems"
+                      DataType="{x:Type m:Item}">
+            <Expander HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" Background="#212f3c">
+                <Expander.Header>
+                    <Border BorderThickness="1" BorderBrush="#5DADE2" CornerRadius="5" Background="#212f3c" Margin="-17,0,-60,0">
+                        <Grid ColumnDefinitions="*,2*,*,*,*,*"
+                              RowDefinitions="*,*">
+                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                    BorderThickness="1,1,2,1" BorderBrush="#5DADE2" CornerRadius="5">
+                                <Image HorizontalAlignment="Center" Height="80" Source="{Binding ImageUrl^}"/>
+                            </Border>
+                            <Label Grid.Row="1" Grid.Column="1" FontSize="25" Classes="StatLabel" Content="{Binding ItemName}"></Label>
+                            <TextBox Grid.Row="1" Grid.Column="2" x:Name="CountTextBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding Count}"></TextBox>
+                            <Label Grid.Row="1" Grid.Column="3" FontSize="18" Content="{Binding Spent}"></Label>
+                            <Label Grid.Row="1" Grid.Column="4" FontSize="18" Content="{Binding FullStatPrice}" Foreground="{Binding TextColor}"></Label>
+                            <Label Grid.Row="0" Grid.Column="5" Grid.RowSpan="2" FontSize="22" Classes="StatLabel"  Content="{Binding FullStatPricePercent}" Foreground="{Binding TextColor}"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Content="Название"></Label>
+                            <Label Grid.Row="0" Grid.Column="2" Content="Количество"></Label>
+                            <Label Grid.Row="0" Grid.Column="3" Content="Потрачено"></Label>
+                            <Label Grid.Row="0" Grid.Column="4" Content="Прибыль"></Label>
+                        </Grid>
+                    </Border>
+                </Expander.Header>
+                <Grid RowDefinitions="*,*" ShowGridLines="False">
+                    <Grid Grid.Row="0" ShowGridLines="False">
+                        <Grid ColumnDefinitions="*,50">
+                            <Grid Grid.Column="0">
+                                <Border BorderThickness="1" BorderBrush="#5DADE2" CornerRadius="5" Background="#212f3c">
+                                    <Image Source="{Binding GraphicImagePath}" Stretch="UniformToFill"></Image>
+                                </Border>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <StackPanel>
+                                    <Button x:Name="ButtonReload" Click="ButtonReload_OnClick"
+                                            Background="#1a354d" Height="50" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                        <Image Height="48" Width="48" Source="avares://testgraph/Assets/free-icon-refresh-5234484.png"></Image>
+                                    </Button>
+                                    <Button x:Name="ButtonSell" Click="ButtonSell_OnClick"
+                                        Background="#1a354d" Height="50" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                        <Image Height="48" Width="48" Source="avares://testgraph/Assets/free-icon-dollar-11574622.png"></Image>
+                                    </Button>
+                                    <Button  x:Name="ButtonDelete" Click="ButtonDelete_OnClick"
+                                             Background="#1a354d" Height="50" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                        <Image Height="48" Width="48" Source="avares://testgraph/Assets/free-icon-waste-bin-10178341.png"></Image>
+                                    </Button>
+                                    <Button Height="50" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsEnabled="False"></Button>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Row="1" ShowGridLines="False" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*,*,*">
+                        <Grid Grid.Row="0" Grid.Column="0">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="Закупочная цена за ед."></Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <TextBox x:Name="PurchaseTextBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="{Binding PurchasePrice}" FontSize="18"></TextBox>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="1">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="Актуальная стоимость за ед."></Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="{Binding SteamPrice}" FontSize="18"></Label>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="2">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="Стоимость за ед. с комиссией"></Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="2">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="{Binding SteamPriceWithFee}" FontSize="18"></Label>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="3">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="Прибыль за 1 ед."></Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="3">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="{Binding StatPrice}" Foreground="{Binding TextColor}" FontSize="18"></Label>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="4">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="Прибыль за 1 ед. с комиссией"></Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="4">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="{Binding StatPriceWithFee}" Foreground="{Binding TextColor}" FontSize="18"></Label>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="5">
+                            <Border BorderThickness="0,0,1,0"></Border>
+                            <Label Content="Прибыль за всё с комиссией"></Label>
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="5">
+                            <Label Content="{Binding FullStatPriceWithFee}" Foreground="{Binding TextColor}" FontSize="18"></Label>
+                        </Grid>
+                    </Grid>
+                    
+                </Grid>
+            </Expander>
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="PanelTemplate">
+            <StackPanel HorizontalAlignment="Stretch" Background="#212f3c"/>
+        </ItemsPanelTemplate>
+    </Window.Resources>
+    <Border BorderBrush="#5DADE2" 
+            BorderThickness="1"
+            Padding="15">
+        <TabControl Background="#212f3c" HorizontalContentAlignment="Stretch">
+            <TabItem Header="Главная">
+             <ScrollViewer>
+             <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#212f3c">
+                 <Grid ColumnDefinitions="*,*,*,*,*,90"
+                       RowDefinitions="*,*">
+                     <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" 
+                             BorderBrush="#5DADE2" 
+                             BorderThickness="1"
+                             Margin="5"
+                             CornerRadius="5"
+                             Padding="10">
+                         <StackPanel Orientation="Vertical">
+                             <Label Content="Инвестировано"></Label>
+                             <Label Content="{Binding FullCost}" Foreground="#2cbf08" FontSize="18"></Label>
+                         </StackPanel>
+                     </Border>
+                     <Border Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
+                             BorderBrush="#5DADE2" 
+                             BorderThickness="1"
+                             Margin="5"
+                             CornerRadius="5"
+                             Padding="10">
+                         <StackPanel Orientation="Vertical">
+                             <Label Content="Общая стоимость сейчас"></Label>
+                             <Label Content="{Binding NowCost}" Foreground="#2cbf08" FontSize="18"></Label>
+                        </StackPanel>
+                     </Border>
+                     <Border Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" 
+                             BorderBrush="#5DADE2" 
+                             BorderThickness="1"
+                             Margin="5"
+                             CornerRadius="5"
+                             Padding="10">
+                         <StackPanel Orientation="Vertical">
+                             <Label Content="Прибыль"></Label>
+                             <Label Content="{Binding Profit}" Foreground="{Binding TextColorUpper}" FontSize="18"></Label>
+                         </StackPanel>
+                         </Border>
+                     <Border Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" 
+                             BorderBrush="#5DADE2" 
+                             BorderThickness="1"
+                             Margin="5"
+                             CornerRadius="5"
+                             Padding="10">
+                         <StackPanel Orientation="Vertical">
+                             <Label Content="Чистая прибыль"></Label>
+                             <Label Content="{Binding ClearProfit}" Foreground="{Binding TextColorUpper}" FontSize="18"></Label>
+                         </StackPanel>
+                         </Border>
+                     <Border Grid.Row="0" Grid.Column="4" Grid.RowSpan="2" 
+                             BorderBrush="#5DADE2" 
+                             BorderThickness="1"
+                             Margin="5"
+                             CornerRadius="5"
+                             Padding="10">
+                         <DockPanel>
+                             <Label DockPanel.Dock="Top" Content="Продано на"></Label>
+                             <Button DockPanel.Dock="Top" x:Name="ButtonSoldDelete" Click="ButtonSoldDelete_OnClick" FontSize="18" Content="{Binding SoldForString}" Foreground="{Binding SoldForColor}" Classes="topbutton"></Button>
+                         </DockPanel>
+                     </Border>
+                     <Border Grid.Row="0" Grid.Column="5" Grid.RowSpan="2" CornerRadius="5" Height="74" Margin="5,0,5,0" Padding="0">
+                             <Button  Classes="Add" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="60"
+                                      Background="#212f3c" Padding="2" x:Name="ButtonRefreshAll" Click="ButtonRefreshAll_OnClick">
+                                 <Image Source="avares://testgraph/Assets/ReloadAll.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Image>
+                             </Button>
+                     </Border>
+                     
+                 </Grid>
+                 
+                 <ProgressBar x:Name="RefreshProgress"
+                              IsIndeterminate="True"
+                              IsVisible="{Binding IsRefreshing}"
+                              HorizontalAlignment="Stretch"
+                              Height="10"
+                              BorderBrush="Black"
+                              Foreground="#5DADE2"/>
+                 
+                     <ListBox ItemsSource="{Binding _expanders}" 
+                              ItemTemplate="{StaticResource TemplateOfItems}"
+                              ItemsPanel="{StaticResource PanelTemplate}"
+                              SelectedItem="{Binding SelectedItem}"
+                              SelectionMode="Single">
+                     </ListBox>
+                
+             </StackPanel>
+             </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Добавить предмет">
+                <Border BorderThickness="1" BorderBrush="#5DADE2">
+                    <DockPanel LastChildFill="False" Background="#212f3c">
+                        <TextBlock DockPanel.Dock="Top" 
+                                   Classes="Add" 
+                                   Text="Выберите игру"/>
+                        <ComboBox DockPanel.Dock="Top" 
+                                  HorizontalContentAlignment="Center" 
+                                  HorizontalAlignment="Stretch" 
+                                  Height="60"
+                                  FontSize="25"
+                                  x:Name="ChooseGame">
+                            <ComboBoxItem HorizontalContentAlignment="Center" 
+                                          FontSize="30"
+                                          Content="Counter Strike 2"/>
+                            <ComboBoxItem HorizontalContentAlignment="Center" 
+                                          FontSize="30"
+                                          Content="Dota 2"/>
+                            <ComboBoxItem HorizontalContentAlignment="Center" 
+                                          FontSize="30"
+                                          Content="Team Fortress 2"/>
+                            <ComboBoxItem HorizontalContentAlignment="Center" 
+                                          FontSize="30"
+                                          Content="RUST"/>
+                        </ComboBox>
+                        <TextBlock DockPanel.Dock="Top" 
+                                   Classes="Add" 
+                                   Text="Введите название предмета"/>
+                        <TextBlock DockPanel.Dock="Top" 
+                                   Classes="Add" 
+                                   Text="(   Пример: AWP | Safari Mesh (Battle-Scarred)   )"
+                                   FontSize="12"/>
+                        <TextBox DockPanel.Dock="Top"
+                                 Classes="Add"
+                                 x:Name="InputName"/>
+                        <TextBlock DockPanel.Dock="Top" 
+                                   Classes="Add" 
+                                   Text="Введите количество купленных предметов данного типа"/>
+                        <TextBox DockPanel.Dock="Top" 
+                                 Classes="Add" 
+                                 x:Name="InputCount"/>
+                        <TextBlock DockPanel.Dock="Top" 
+                                   Classes="Add" 
+                                   Text="Введите закупочную цену за единицу товара"/>
+                        <TextBox DockPanel.Dock="Top" 
+                                 Classes="Add" 
+                                 x:Name="InputPrice"/>
+                        <Button DockPanel.Dock="Top" 
+                                Content="Добавить" 
+                                Classes="topbutton" 
+                                x:Name="Add"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                VerticalAlignment="Stretch"
+                                Height="230"
+                                FontSize="50"
+                                Click="Add_OnClick"/>
+                        <ProgressBar DockPanel.Dock="Top"
+                                     x:Name="LoadingBar"
+                                     IsIndeterminate="True"
+                                     Height="30"
+                                     IsVisible="False"
+                                     Margin="0,10,0,0" 
+                                     HorizontalAlignment="Stretch"
+                                     Foreground="#5DADE2"/>
+                    </DockPanel>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </Border>
+</Window>

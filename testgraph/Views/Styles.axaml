@@ -1,0 +1,68 @@
+<Style xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+    <Style Selector="Button.topbutton">
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#5DADE2"/>
+        <Setter Property="Background" Value="#212f3c"/>
+        <Setter Property="Foreground" Value="#FDFEFE"/>
+    </Style>
+    <Style Selector="Expander">
+        <Setter Property="Background" Value="#48627a"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="#5DADE2"></Setter>
+    </Style>
+    <Style Selector="TabItem">
+        <Setter Property="Background" Value="#48627a"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush" Value="#5DADE2"></Setter>
+        <Setter Property="CornerRadius" Value="5"></Setter>
+        <Setter Property="Margin" Value="0,0,0,10"></Setter>
+    </Style>
+    <Style Selector="TextBlock.Add">
+        <Setter Property="Foreground" Value="#FDFEFE"></Setter>
+        <Setter Property="Margin" Value="3"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+        <Setter Property="TextAlignment" Value="Center"></Setter>
+        <Setter Property="FontSize" Value="25"></Setter>
+    </Style>
+    <Style Selector="TextBox.Add">
+        <Setter Property="Background" Value="#48627a"></Setter>
+        <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        <Setter Property="Height" Value="50"></Setter>
+        <Setter Property="FontSize" Value="25"></Setter>
+    </Style>
+    <Style Selector="ListBoxItem">
+        <Setter Property="Background" Value="#212f3c"/>
+        <Setter Property="Foreground" Value="#FDFEFE"/>
+    </Style>
+    <Style Selector="Expander /template/ Border /template/ ContentPresenter">
+        <Setter Property="Background" Value="#212f3c"/>
+        <Setter Property="Foreground" Value="#FDFEFE"/>
+    </Style>
+    <Style Selector="Label">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="#FDFEFE"/>
+    </Style>
+    <Style Selector="Border">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#5DADE2"/>
+    </Style>
+    <Style Selector="Label.StatLabel">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Calibri"/>
+    </Style>
+</Style>
